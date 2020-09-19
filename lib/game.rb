@@ -1,6 +1,5 @@
+require 'pry'
 class Game
-  attr_reader :secret_pattern, :player, :computer
-
   def initialize(secret_pattern, human, computer)
     @secret_pattern = secret_pattern
     @player_guess = nil
@@ -13,10 +12,14 @@ class Game
   end
 
   def start_game
-    puts 'The codemaker has created a secret pattern'
-    puts 'Guess four colors from these choices: '
-    puts 'blue, green, yellow, red, pink, orange'
-    ask_player_guess
+    if @human == 'Codebreaker'
+      puts 'The codemaker has created a secret pattern'
+      puts 'Guess four colors from these choices: '
+      puts 'blue, green, yellow, red, pink, orange'
+      ask_player_guess
+    else
+      computer_turn = AI.new(@secret_pattern)
+    end
   end
 
   def ask_player_guess
@@ -72,7 +75,11 @@ class Game
     puts "Codemaker puts #{@black_pegs} black #{black_quantity} and #{@white_pegs} white #{white_quantity}"
     puts "This ends turn number #{@turn_number}"
     @turn_number += 1
-    ask_player_guess
+    if @human == 'Codebreaker'
+      ask_player_guess
+    else
+      guess_random_colors until @turn_number == 13
+    end
   end
 
   def black_quantity
@@ -104,5 +111,24 @@ class Game
     else
       exit
     end
+  end
+end
+
+class AI < Game
+  def initialize(secret_pattern)
+    @secret_pattern = secret_pattern
+    @turn_number = 1
+    guess_random_colors
+  end
+
+  def guess_random_colors
+    random_code_pegs = Setup::CODE_PEGS.flat_map { |peg| [peg] * 4 }
+    @player_guess = random_code_pegs.sample(4)
+    computer_answer
+  end
+
+  def computer_answer
+    puts "The Codebreaker answers #{@player_guess}"
+    verify_win
   end
 end

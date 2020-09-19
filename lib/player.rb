@@ -15,12 +15,12 @@ class Player
     if answer == 'Codemaker'
       @human = answer
       @computer = 'Codebreaker'
-    elsif answer == 'Codemaker'
+    elsif answer == 'Codebreaker'
       @human = answer
-      @computer = 'Codebreaker'
+      @computer = 'Codemaker'
     else
       ask_human_role
     end
-    Setup.new
+    Setup.new(@human, @computer)
   end
 end
