@@ -1,9 +1,15 @@
 class Setup
+  require_relative 'player'
   CODE_PEGS = %w[blue green yellow red pink orange].freeze
   attr_accessor :secret_pattern
+  attr_reader :human, :computer
 
   def initialize
-    create_secret_pattern
+    if @human == 'Codebreaker'
+      create_secret_pattern
+    else
+      ask_secret_pattern
+    end
   end
 
   def create_secret_pattern
@@ -12,7 +18,19 @@ class Setup
     start_game
   end
 
+  def ask_secret_pattern
+    puts 'Codemaker, create the secret pattern with four of these colors: '
+    puts 'blue, green, yellow, red, pink, orange'
+    answer = gets.chomp
+    store_secret_patter(answer)
+  end
+
+  def store_secret_patter(answer)
+    @secret_pattern = answer.split
+    start_game
+  end
+
   def start_game
-    Game.new(@secret_pattern)
+    Game.new(@secret_pattern, @human, @computer)
   end
 end
