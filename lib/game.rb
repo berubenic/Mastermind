@@ -1,4 +1,6 @@
-require 'pry'
+# frozen_string_literal: true
+
+# Contains the game logic
 class Game
   def initialize(secret_pattern, human, computer)
     @secret_pattern = secret_pattern
@@ -18,7 +20,7 @@ class Game
       puts 'blue, green, yellow, red, pink, orange'
       ask_player_guess
     else
-      computer_turn = AI.new(@secret_pattern)
+      AI.new(@secret_pattern)
     end
   end
 
@@ -107,13 +109,14 @@ class Game
     puts 'Do you want to play again? (Yes or No)'
     answer = gets.chomp
     if answer == 'Yes'
-      new_game = Setup.new
+      Player.new
     else
       exit
     end
   end
 end
 
+# Very Bad AI
 class AI < Game
   def initialize(secret_pattern)
     @secret_pattern = secret_pattern
@@ -129,6 +132,7 @@ class AI < Game
 
   def computer_answer
     puts "The Codebreaker answers #{@player_guess}"
+    no_more_turns if @turn_number == 12
     verify_win
   end
 end

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Assigns roles to player and computer
 class Player
   def initialize
     @human = nil

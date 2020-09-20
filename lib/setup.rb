@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Create the secret_pattern
 class Setup
   CODE_PEGS = %w[blue green yellow red pink orange].freeze
 
@@ -31,6 +34,6 @@ class Setup
   end
 
   def start_game
-    new_game = Game.new(@secret_pattern, @human, @computer)
+    Game.new(@secret_pattern, @human, @computer)
   end
 end
